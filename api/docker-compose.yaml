@@ -1,0 +1,47 @@
+version: '3'
+services:
+  postgres: 
+    image: postgres
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - '6000:5432'
+  
+  # pgadmin: 
+  #   image: dpage/pgadmin4
+  #   env_file: ./.env
+  #   restart: unless-stopped
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: akeron.allkushi@softup.co
+  #     PGADMIN_DEFAULT_PASSWORD: guest
+  #   ports:
+  #     - '15432:80'
+  #   volumes:
+  #     - ./db:/var/lib/pgadmin
+  #   depends_on:
+  #     - postgres
+   
+  node-app: 
+    depends_on:
+      - postgres
+    build: .
+    # image: 863872515231.dkr.ecr.eu-central-1.amazonaws.com/akeron/ecr:latest
+    restart: unless-stopped
+    ports:
+      - '8000:5000'
+    environment:
+      DB_HOST: $DATABASE_HOST
+      DB_USER: $POSTGRES_USER
+      DB_PASSWORD: $POSTGRES_PASSWORD
+      DB_NAME: $POSTGRES_DB
+    stdin_open: true
+    tty: true
+
+volumes: 
+  db:
