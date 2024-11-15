@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "akeron-remote-state"
+    key    = "key/terraform.tfstate"
+    region = "eu-central-1"
+  }
+}
+
 provider "aws" {
   region = "eu-central-1"
 }
