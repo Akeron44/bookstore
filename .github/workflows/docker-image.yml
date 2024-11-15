@@ -39,5 +39,5 @@ jobs:
       - name: Create RDS Database
         working-directory: ./aws
         run: |
-        terraform state pull
-        terraform apply -auto-approve -target module.rds
+          terraform state pull
+          terraform apply -auto-approve -target module.rds
